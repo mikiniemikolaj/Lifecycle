@@ -1,24 +1,42 @@
 package com.example.cwiczenie60mp_18;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.util.Log;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+    private int licznik = 0;
+    private TextView tv;
+
+    private void log(String m) { Log.i("LC", "--> " + m + "()"); }
+
+    @Override protected void onCreate(Bundle b) {
+        super.onCreate(b);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        log("onCreate");
+        tv = findViewById(R.id.tvLicznik);
+        findViewById(R.id.btnDodaj).setOnClickListener(v -> tv.setText(String.valueOf(++licznik)));
+    }
+
+    @Override protected void onStart() { super.onStart(); log("onStart"); }
+    @Override protected void onResume() { super.onResume(); log("onResume"); }
+    @Override protected void onPause() { super.onPause(); log("onPause"); }
+    @Override protected void onStop() { super.onStop(); log("onStop"); }
+    @Override protected void onRestart() { super.onRestart(); log("onRestart"); }
+    @Override protected void onDestroy() { super.onDestroy(); log("onDestroy"); }
+
+    @Override protected void onSaveInstanceState(Bundle b) {
+        super.onSaveInstanceState(b);
+        b.putInt("licznik", licznik);
+        log("onSaveInstanceState");
+    }
+
+    @Override protected void onRestoreInstanceState(Bundle b) {
+        super.onRestoreInstanceState(b);
+        licznik = b.getInt("licznik");
+        tv.setText(String.valueOf(licznik));
+        log("onRestoreInstanceState");
     }
 }
